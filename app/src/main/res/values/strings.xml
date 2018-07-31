@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Android_Restaurante</string>
+
+    <!--Activity SplashActivity-->
+    <string name="image_splash">Restaurante</string>
+    <string name="view_splash">Registro de Pedidos en un restaurante</string>
+
+    <!--FragmentCarta-->
+    <string name="btn_sync">Sincronizar</string>
+
+</resources>
