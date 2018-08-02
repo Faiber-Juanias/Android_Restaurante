@@ -9,11 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 public class AdapterList extends BaseAdapter{
 
-    Context objContext;
-    ArrayList<Datos> objList;
+    private Context objContext;
+    private ArrayList<Datos> objList;
 
     public AdapterList(Context objContext, ArrayList<Datos> objList) {
         this.objContext = objContext;
@@ -42,7 +43,7 @@ public class AdapterList extends BaseAdapter{
         //Inflo la vista
         View vista = view;
         LayoutInflater objInflater = LayoutInflater.from(objContext);
-        vista = objInflater.inflate(R.layout.item_list, null);
+        vista = objInflater.inflate(R.layout.item_list, viewGroup);
 
         //Creo las referencias
         ImageView objImagen = (ImageView) vista.findViewById(R.id.img_list_view);
@@ -54,6 +55,6 @@ public class AdapterList extends BaseAdapter{
         objViewNombre.setText(objDatos.getNombre());
         objViewPrecio.setText(objDatos.getPrecio());
 
-        return view;
+        return vista;
     }
 }

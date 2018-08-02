@@ -1,5 +1,6 @@
 package com.example.multimedia.android_restaurante;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.example.multimedia.android_restaurante.db.OpenHelper;
 import com.example.multimedia.android_restaurante.fragments.FragmentCarta;
 import com.example.multimedia.android_restaurante.fragments.FragmentDetalleCarta;
 import com.example.multimedia.android_restaurante.fragments.FragmentPedido;

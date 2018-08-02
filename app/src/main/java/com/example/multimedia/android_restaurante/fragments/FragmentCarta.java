@@ -1,6 +1,8 @@
 package com.example.multimedia.android_restaurante.fragments;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,8 +12,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.multimedia.android_restaurante.AdapterList;
+import com.example.multimedia.android_restaurante.Datos;
 import com.example.multimedia.android_restaurante.R;
+import com.example.multimedia.android_restaurante.db.Constantes;
+import com.example.multimedia.android_restaurante.db.OpenHelper;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,10 +81,28 @@ public class FragmentCarta extends Fragment {
 
         ListView listaCarta = (ListView) view.findViewById(R.id.lista_carta);
 
-        String[] elementosLista = new String[]{"faiber", "laura", "sofia", "mauricio", "andres"};
+        //Creamos la conexion con la base de datos
+        OpenHelper objHelper = new OpenHelper(getContext(), "restaurante", null, 1);
+        SQLiteDatabase objDb = objHelper.getWritableDatabase();
 
-        ArrayAdapter<String> objAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,elementosLista);
-        listaCarta.setAdapter(objAdapter);
+        //Consulto todos los registros de la tabla Platos
+        String[] campos = new String[]{Constantes.NOMBRE_TBL_PLATOS, Constantes.PRECIO_TBL_PLATOS};
+        Cursor objCursor = objDb.query(Constantes.TBL_PLATOS, campos, null, null, null, null, null);
+        //Verifico si hay registros
+        if (objCursor.moveToFirst()){
+            //Creamos un ArrayList de tipo Datos
+            ArrayList<Datos> objLista = new ArrayList<>();
+            do {
+                //Almaceno la informacion traida de la base de datos en el ArrayList para mostrarlos en el adaptador
+                objLista.add(new Datos(R.drawable.plato, objCursor.getString(0), objCursor.getInt(1)));
+            }while (objCursor.moveToNext());
+            //Mandamos la informacion al adaptador
+            AdapterList objAdapter = new AdapterList(getContext(), objLista);
+            //Mostramos la lista
+            listaCarta.setAdapter(objAdapter);
+        }else {
+            Toast.makeText(getContext(), "Ningun registro.", Toast.LENGTH_SHORT).show();
+        }
 
         listaCarta.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

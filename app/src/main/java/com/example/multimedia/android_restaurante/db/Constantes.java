@@ -9,7 +9,7 @@ public class Constantes {
     public static final String PRECIO_TBL_PLATOS = "Precio";
     public static final String IMAGEN_TBL_PLATOS = "Imagen";
     public static final String CREA_TBL_PLATOS = "CREATE TABLE " + TBL_PLATOS + " (" +
-            ID_TBL_PLATOS + " INTEGER AUTO_INCREMENT, " +
+            ID_TBL_PLATOS + " INTEGER PRIMARY KEY, " +
             NOMBRE_TBL_PLATOS + " TEXT, " +
             DESC_TBL_PLATOS + " TEXT, " +
             PRECIO_TBL_PLATOS + " INTEGER, " +
@@ -21,7 +21,7 @@ public class Constantes {
     public static final String ID_TBL_PLATOS_TBL_PEDIDO = "Plato_id";
     public static final String CANTIDAD_TBL_PEDIDO = "Cantidad";
     public static final String CREA_TBL_PEDIDO = "CREATE TABLE " + TBL_PEDIDO + " (" +
-            ID_TBL_PEDIDO + " INTEGER AUTO_INCREMENT, " +
+            ID_TBL_PEDIDO + " INTEGER PRIMARY KEY, " +
             ID_TBL_PLATOS_TBL_PEDIDO + " INTEGER, " +
             CANTIDAD_TBL_PEDIDO + " INTEGER)";
 }
