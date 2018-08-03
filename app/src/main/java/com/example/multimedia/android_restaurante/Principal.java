@@ -19,8 +19,9 @@ import com.example.multimedia.android_restaurante.fragments.FragmentPedido;
 public class Principal extends AppCompatActivity implements FragmentCarta.OnFragmentInteractionListener, FragmentDetalleCarta.OnFragmentInteractionListener, FragmentPedido.OnFragmentInteractionListener{
 
     //Almacenamos en un array los id de cada boton
-    private int[] idBotones = new int[]{R.id.btn_carta, R.id.btn_pedido, R.id.btn_informe, R.id.btn_salida};
-    private ImageButton objBotones;
+    private int[] idBotones = new int[]{R.id.btn_carta, R.id.btn_pedido, R.id.btn_informe};
+    private ImageButton[] objBotones = new ImageButton[3];
+    private ImageButton btnSalida;
 
     //Almaceno la instancia de todos los fragmentos
     Fragment[] objFragment = new Fragment[3];
@@ -30,19 +31,50 @@ public class Principal extends AppCompatActivity implements FragmentCarta.OnFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
+        //Creo la referencia con el boton salida
+        btnSalida = (ImageButton) findViewById(R.id.btn_salida);
+        btnSalida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Salgo de la ejecucion
+                finish();
+            }
+        });
+
+        //Lleno el array con cada una de las instancias de cada fragmento
         objFragment[0] = new FragmentCarta();
         objFragment[1] = new FragmentDetalleCarta();
         objFragment[2] = new FragmentPedido();
 
         for (int i=0; i<idBotones.length; i++){
             //Creamos la referencia a los botones
-            objBotones = (ImageButton) findViewById(idBotones[i]);
+            objBotones[i] = (ImageButton) findViewById(idBotones[i]);
 
             final int n = i;
 
-            objBotones.setOnClickListener(new View.OnClickListener() {
+            objBotones[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    /**
+                     * Valido el id del boton presionado para asi cambiar el color del boton seleccionado
+                     */
+                    switch (objBotones[n].getId()){
+                        case R.id.btn_carta:
+                            objBotones[n].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                            objBotones[1].setBackgroundColor(0);
+                            objBotones[2].setBackgroundColor(0);
+                            break;
+                        case R.id.btn_pedido:
+                            objBotones[n].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                            objBotones[0].setBackgroundColor(0);
+                            objBotones[2].setBackgroundColor(0);
+                            break;
+                        case R.id.btn_informe:
+                            objBotones[n].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                            objBotones[0].setBackgroundColor(0);
+                            objBotones[1].setBackgroundColor(0);
+                            break;
+                    }
                     FragmentManager objManager = getSupportFragmentManager();
                     FragmentTransaction objTransaction = objManager.beginTransaction();
                     objTransaction.replace(R.id.content_fragment, objFragment[n]);

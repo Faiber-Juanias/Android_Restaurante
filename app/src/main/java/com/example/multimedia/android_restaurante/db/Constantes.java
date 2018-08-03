@@ -13,7 +13,7 @@ public class Constantes {
             NOMBRE_TBL_PLATOS + " TEXT, " +
             DESC_TBL_PLATOS + " TEXT, " +
             PRECIO_TBL_PLATOS + " INTEGER, " +
-            IMAGEN_TBL_PLATOS + " TEXT)";
+            IMAGEN_TBL_PLATOS + " INTEGER)";
 
     //Constantes para la tabla Pedido
     public static final String TBL_PEDIDO = "Pedido";

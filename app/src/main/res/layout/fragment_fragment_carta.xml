@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.FragmentCarta">
 
     <!-- TODO: Update blank fragment layout -->
 
-
-    <ListView
-        android:id="@+id/lista_carta"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_platos"
         android:layout_width="match_parent"
-        android:layout_height="451dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="350dp">
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
     <Button
         android:id="@+id/btn_sync"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
+        android:layout_marginStart="110dp"
         android:layout_marginTop="3dp"
-        android:text="@string/btn_sync"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lista_carta" />
-</android.support.constraint.ConstraintLayout>
+        android:text="@string/btn_sync" />
+</LinearLayout>

@@ -79,5 +79,55 @@ public class OpenHelper extends SQLiteOpenHelper {
 
         //Insertamos los datos en la tabla
         db.insert(Constantes.TBL_PLATOS, null, objContentCuatro);
+
+        //Listamos los datos a insertar
+        ContentValues objContentCinco = new ContentValues();
+        objContentCinco.put(Constantes.NOMBRE_TBL_PLATOS, "Caldo de costilla");
+        objContentCinco.put(Constantes.DESC_TBL_PLATOS, "Con silantro, papa");
+        objContentCinco.put(Constantes.PRECIO_TBL_PLATOS, 4500);
+        objContentCinco.put(Constantes.IMAGEN_TBL_PLATOS, "6");
+
+        //Insertamos los datos en la tabla
+        db.insert(Constantes.TBL_PLATOS, null, objContentCinco);
+
+        //Listamos los datos a insertar
+        ContentValues objContentSeis = new ContentValues();
+        objContentSeis.put(Constantes.NOMBRE_TBL_PLATOS, "Mojarra frita");
+        objContentSeis.put(Constantes.DESC_TBL_PLATOS, "Con arroz, petacon y ensalada");
+        objContentSeis.put(Constantes.PRECIO_TBL_PLATOS, 8000);
+        objContentSeis.put(Constantes.IMAGEN_TBL_PLATOS, "7");
+
+        //Insertamos los datos en la tabla
+        db.insert(Constantes.TBL_PLATOS, null, objContentSeis);
+
+        //Listamos los datos a insertar
+        ContentValues objContentSiete = new ContentValues();
+        objContentSiete.put(Constantes.NOMBRE_TBL_PLATOS, "Arroz chino");
+        objContentSiete.put(Constantes.DESC_TBL_PLATOS, "Con camarones a la plancha");
+        objContentSiete.put(Constantes.PRECIO_TBL_PLATOS, 6000);
+        objContentSiete.put(Constantes.IMAGEN_TBL_PLATOS, "8");
+
+        //Insertamos los datos en la tabla
+        db.insert(Constantes.TBL_PLATOS, null, objContentSiete);
+
+        //Listamos los datos a insertar
+        ContentValues objContentOcho = new ContentValues();
+        objContentOcho.put(Constantes.NOMBRE_TBL_PLATOS, "Sopa de mondongo");
+        objContentOcho.put(Constantes.DESC_TBL_PLATOS, "Con platano, silantro y verduras");
+        objContentOcho.put(Constantes.PRECIO_TBL_PLATOS, 7000);
+        objContentOcho.put(Constantes.IMAGEN_TBL_PLATOS, "9");
+
+        //Insertamos los datos en la tabla
+        db.insert(Constantes.TBL_PLATOS, null, objContentOcho);
+
+        //Listamos los datos a insertar
+        ContentValues objContentNueve = new ContentValues();
+        objContentNueve.put(Constantes.NOMBRE_TBL_PLATOS, "Huevos al gusto");
+        objContentNueve.put(Constantes.DESC_TBL_PLATOS, "Con arroz, chocolate y pan");
+        objContentNueve.put(Constantes.PRECIO_TBL_PLATOS, 5000);
+        objContentNueve.put(Constantes.IMAGEN_TBL_PLATOS, "10");
+
+        //Insertamos los datos en la tabla
+        db.insert(Constantes.TBL_PLATOS, null, objContentNueve);
     }
 }

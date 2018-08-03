@@ -6,11 +6,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -79,39 +82,75 @@ public class FragmentCarta extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_fragment_carta, container, false);
 
-        ListView listaCarta = (ListView) view.findViewById(R.id.lista_carta);
+        //Creamos las referencias
+        final RecyclerView objRecycler = (RecyclerView) view.findViewById(R.id.recycler_platos);
+        Button objSync = (Button) view.findViewById(R.id.btn_sync);
 
-        //Creamos la conexion con la base de datos
-        OpenHelper objHelper = new OpenHelper(getContext(), "restaurante", null, 1);
-        SQLiteDatabase objDb = objHelper.getWritableDatabase();
+        //Instanciamos el ArrayList
+        final ArrayList<Datos> arrayDatos = new ArrayList<>();
+        //Mostramos el recycler como una lista vertical
+        objRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        //Llamamos al metodo para que llene el ArrayList
+        llenaRecycler(arrayDatos);
 
-        //Consulto todos los registros de la tabla Platos
-        String[] campos = new String[]{Constantes.NOMBRE_TBL_PLATOS, Constantes.PRECIO_TBL_PLATOS};
-        Cursor objCursor = objDb.query(Constantes.TBL_PLATOS, campos, null, null, null, null, null);
-        //Verifico si hay registros
-        if (objCursor.moveToFirst()){
-            //Creamos un ArrayList de tipo Datos
-            ArrayList<Datos> objLista = new ArrayList<>();
-            do {
-                //Almaceno la informacion traida de la base de datos en el ArrayList para mostrarlos en el adaptador
-                objLista.add(new Datos(R.drawable.plato, objCursor.getString(0), objCursor.getInt(1)));
-            }while (objCursor.moveToNext());
-            //Mandamos la informacion al adaptador
-            AdapterList objAdapter = new AdapterList(getContext(), objLista);
-            //Mostramos la lista
-            listaCarta.setAdapter(objAdapter);
-        }else {
-            Toast.makeText(getContext(), "Ningun registro.", Toast.LENGTH_SHORT).show();
-        }
-
-        listaCarta.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //Creamos una instancia del adaptador
+        AdapterList objAdapter = new AdapterList(arrayDatos, getContext());
+        //Asignamos el evento OnClickListener que creamos
+        objAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Seleccion: " + arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getNombre(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        //Asignamos el adaptador al recycler
+        objRecycler.setAdapter(objAdapter);
 
+        objSync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Sincronizando...", Toast.LENGTH_SHORT).show();
             }
         });
 
         return view;
+    }
+
+    /**
+     * Metodo que devuelve la conexion
+     */
+    public SQLiteDatabase conecta(){
+        //Creamos la conexion con la base de datos
+        OpenHelper objHelper = new OpenHelper(getContext(), "restaurante", null, 1);
+        SQLiteDatabase objDb = objHelper.getWritableDatabase();
+        return objDb;
+    }
+
+    public void llenaRecycler(ArrayList<Datos> arrayDatos){
+        SQLiteDatabase objDb = conecta();
+
+        //Consulto todos los registros de la tabla Platos
+        String[] campos = new String[]{Constantes.NOMBRE_TBL_PLATOS, Constantes.PRECIO_TBL_PLATOS};
+        Cursor objCursor = objDb.query(Constantes.TBL_PLATOS, campos, null, null, null, null, null);
+
+        //Verifico si hay registros
+        if (objCursor.moveToFirst()){
+            do {
+                arrayDatos.add(new Datos(R.drawable.plato, objCursor.getString(0), objCursor.getInt(1)));
+            }while (objCursor.moveToNext());
+        }
+
+        /*
+        //Creamos una instancia del adaptador
+        AdapterList objAdapter = new AdapterList(arrayDatos, getContext());
+        //Asignamos el evento OnClickListener que creamos
+        objAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Seleccion: " + arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getNombre(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        //Asignamos el adaptador al recycler
+        objRecycler.setAdapter(objAdapter);*/
     }
 
     // TODO: Rename method, update argument and hook method into UI event
