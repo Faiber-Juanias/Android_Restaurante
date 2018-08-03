@@ -1,14 +1,17 @@
 package com.example.multimedia.android_restaurante;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.zip.Inflater;
@@ -17,8 +20,10 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.HolderDatos>
     implements View.OnClickListener{
 
     //Creamos el Array
-    ArrayList<Datos> arrayDatos;
-    Context objContext;
+    private ArrayList<Datos> arrayDatos;
+    private Context objContext;
+
+    private static final String TAG = "MyActivity";
 
     //Para generar eventos creamos el escuchador
     private View.OnClickListener listener;
@@ -42,10 +47,14 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.HolderDatos>
 
     @Override
     public void onBindViewHolder(@NonNull AdapterList.HolderDatos holderDatos, int i) {
-        //Asigno la informacion a los componentes
-        holderDatos.objImagen.setImageResource(arrayDatos.get(i).getImagen());
-        holderDatos.objNombrePlato.setText(arrayDatos.get(i).getNombre());
-        holderDatos.objPrecioPlato.setText(String.valueOf(arrayDatos.get(i).getPrecio()));
+        //try {
+            //Asigno la informacion a los componentes
+            holderDatos.objImagen.setImageResource(arrayDatos.get(i).getImagen());
+            holderDatos.objNombrePlato.setText(arrayDatos.get(i).getNombre());
+            holderDatos.objPrecioPlato.setText(String.valueOf(arrayDatos.get(i).getPrecio()));
+        //}catch (Exception e){
+            //Log.e(TAG, e.getMessage());
+        //}
     }
 
     @Override

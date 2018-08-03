@@ -12,4 +12,12 @@
     <!--FragmentCarta-->
     <string name="btn_sync">Sincronizar</string>
 
+    <!--Dialogo fullScreen-->
+    <string name="view_titulo">Titulo</string>
+    <string name="view">Cantidad del pedido</string>
+    <string name="view_precio_desc">0</string>
+    <string name="view_desc">Descripcion</string>
+    <string name="btn_pedir">Agregar al pedido</string>
+    <string name="valor">0</string>
+
 </resources>

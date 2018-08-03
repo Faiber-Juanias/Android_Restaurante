@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.multimedia.android_restaurante.R;
+
 public class OpenHelper extends SQLiteOpenHelper {
 
     public OpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -35,7 +37,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         objContent.put(Constantes.NOMBRE_TBL_PLATOS, "Sopa de mariscos");
         objContent.put(Constantes.DESC_TBL_PLATOS, "Pescado, camarón, cangrejo, calamar y pulpo en un consomé de vino blanco y ajo");
         objContent.put(Constantes.PRECIO_TBL_PLATOS, 13000);
-        objContent.put(Constantes.IMAGEN_TBL_PLATOS, "1");
+        objContent.put(Constantes.IMAGEN_TBL_PLATOS, R.drawable.plato);
 
         //Insertamos los datos en la tabla
         db.insert(Constantes.TBL_PLATOS, null, objContent);
@@ -45,7 +47,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         objContentUno.put(Constantes.NOMBRE_TBL_PLATOS, "Pescado Entero Frito");
         objContentUno.put(Constantes.DESC_TBL_PLATOS, "Con arroz y vegetales");
         objContentUno.put(Constantes.PRECIO_TBL_PLATOS, 7000);
-        objContentUno.put(Constantes.IMAGEN_TBL_PLATOS, "2");
+        objContentUno.put(Constantes.IMAGEN_TBL_PLATOS, 2);
 
         //Insertamos los datos en la tabla
         db.insert(Constantes.TBL_PLATOS, null, objContentUno);
@@ -55,7 +57,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         objContentDos.put(Constantes.NOMBRE_TBL_PLATOS, "Filete de Pescado");
         objContentDos.put(Constantes.DESC_TBL_PLATOS, "Empanizado o a la plancha con arroz y vegetales");
         objContentDos.put(Constantes.PRECIO_TBL_PLATOS, 8000);
-        objContentDos.put(Constantes.IMAGEN_TBL_PLATOS, "3");
+        objContentDos.put(Constantes.IMAGEN_TBL_PLATOS, 3);
 
         //Insertamos los datos en la tabla
         db.insert(Constantes.TBL_PLATOS, null, objContentDos);
@@ -65,7 +67,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         objContentTres.put(Constantes.NOMBRE_TBL_PLATOS, "Atún a la Plancha");
         objContentTres.put(Constantes.DESC_TBL_PLATOS, "Afilete de atun servido con pasta japonesa, vegetales y wasabi");
         objContentTres.put(Constantes.PRECIO_TBL_PLATOS, 15000);
-        objContentTres.put(Constantes.IMAGEN_TBL_PLATOS, "4");
+        objContentTres.put(Constantes.IMAGEN_TBL_PLATOS, 4);
 
         //Insertamos los datos en la tabla
         db.insert(Constantes.TBL_PLATOS, null, objContentTres);
@@ -75,7 +77,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         objContentCuatro.put(Constantes.NOMBRE_TBL_PLATOS, "Arroz con Pollo");
         objContentCuatro.put(Constantes.DESC_TBL_PLATOS, "Con ensalada mixta o papas fritas");
         objContentCuatro.put(Constantes.PRECIO_TBL_PLATOS, 7000);
-        objContentCuatro.put(Constantes.IMAGEN_TBL_PLATOS, "5");
+        objContentCuatro.put(Constantes.IMAGEN_TBL_PLATOS, 5);
 
         //Insertamos los datos en la tabla
         db.insert(Constantes.TBL_PLATOS, null, objContentCuatro);
@@ -85,7 +87,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         objContentCinco.put(Constantes.NOMBRE_TBL_PLATOS, "Caldo de costilla");
         objContentCinco.put(Constantes.DESC_TBL_PLATOS, "Con silantro, papa");
         objContentCinco.put(Constantes.PRECIO_TBL_PLATOS, 4500);
-        objContentCinco.put(Constantes.IMAGEN_TBL_PLATOS, "6");
+        objContentCinco.put(Constantes.IMAGEN_TBL_PLATOS, 6);
 
         //Insertamos los datos en la tabla
         db.insert(Constantes.TBL_PLATOS, null, objContentCinco);
@@ -95,39 +97,9 @@ public class OpenHelper extends SQLiteOpenHelper {
         objContentSeis.put(Constantes.NOMBRE_TBL_PLATOS, "Mojarra frita");
         objContentSeis.put(Constantes.DESC_TBL_PLATOS, "Con arroz, petacon y ensalada");
         objContentSeis.put(Constantes.PRECIO_TBL_PLATOS, 8000);
-        objContentSeis.put(Constantes.IMAGEN_TBL_PLATOS, "7");
+        objContentSeis.put(Constantes.IMAGEN_TBL_PLATOS, 7);
 
         //Insertamos los datos en la tabla
         db.insert(Constantes.TBL_PLATOS, null, objContentSeis);
-
-        //Listamos los datos a insertar
-        ContentValues objContentSiete = new ContentValues();
-        objContentSiete.put(Constantes.NOMBRE_TBL_PLATOS, "Arroz chino");
-        objContentSiete.put(Constantes.DESC_TBL_PLATOS, "Con camarones a la plancha");
-        objContentSiete.put(Constantes.PRECIO_TBL_PLATOS, 6000);
-        objContentSiete.put(Constantes.IMAGEN_TBL_PLATOS, "8");
-
-        //Insertamos los datos en la tabla
-        db.insert(Constantes.TBL_PLATOS, null, objContentSiete);
-
-        //Listamos los datos a insertar
-        ContentValues objContentOcho = new ContentValues();
-        objContentOcho.put(Constantes.NOMBRE_TBL_PLATOS, "Sopa de mondongo");
-        objContentOcho.put(Constantes.DESC_TBL_PLATOS, "Con platano, silantro y verduras");
-        objContentOcho.put(Constantes.PRECIO_TBL_PLATOS, 7000);
-        objContentOcho.put(Constantes.IMAGEN_TBL_PLATOS, "9");
-
-        //Insertamos los datos en la tabla
-        db.insert(Constantes.TBL_PLATOS, null, objContentOcho);
-
-        //Listamos los datos a insertar
-        ContentValues objContentNueve = new ContentValues();
-        objContentNueve.put(Constantes.NOMBRE_TBL_PLATOS, "Huevos al gusto");
-        objContentNueve.put(Constantes.DESC_TBL_PLATOS, "Con arroz, chocolate y pan");
-        objContentNueve.put(Constantes.PRECIO_TBL_PLATOS, 5000);
-        objContentNueve.put(Constantes.IMAGEN_TBL_PLATOS, "10");
-
-        //Insertamos los datos en la tabla
-        db.insert(Constantes.TBL_PLATOS, null, objContentNueve);
     }
 }

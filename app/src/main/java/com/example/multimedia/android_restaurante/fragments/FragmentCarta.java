@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.multimedia.android_restaurante.AdapterList;
 import com.example.multimedia.android_restaurante.Datos;
+import com.example.multimedia.android_restaurante.DialogFullScreen;
 import com.example.multimedia.android_restaurante.R;
 import com.example.multimedia.android_restaurante.db.Constantes;
 import com.example.multimedia.android_restaurante.db.OpenHelper;
@@ -95,16 +98,31 @@ public class FragmentCarta extends Fragment {
 
         //Creamos una instancia del adaptador
         AdapterList objAdapter = new AdapterList(arrayDatos, getContext());
+
         //Asignamos el evento OnClickListener que creamos
         objAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Seleccion: " + arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getNombre(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Imagen: " + arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getImagen(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Nombre: " + arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getNombre(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Precio: " + arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getPrecio(), Toast.LENGTH_SHORT).show();
+                FragmentManager objManager = getFragmentManager();
+                DialogFullScreen objDialog = new DialogFullScreen();
+
+                //Creo un Bundle para enviar los datos a DialogFullScreen
+                Bundle objBundle = new Bundle();
+                objBundle.putInt("imagen", arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getImagen());
+                objDialog.setArguments(objBundle);
+
+                FragmentTransaction objTransaction = objManager.beginTransaction();
+                objTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                objTransaction.add(android.R.id.content, objDialog).addToBackStack(null).commit();
             }
         });
         //Asignamos el adaptador al recycler
         objRecycler.setAdapter(objAdapter);
 
+        //Asignamos el evento al boton Sycn
         objSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,28 +147,20 @@ public class FragmentCarta extends Fragment {
         SQLiteDatabase objDb = conecta();
 
         //Consulto todos los registros de la tabla Platos
-        String[] campos = new String[]{Constantes.NOMBRE_TBL_PLATOS, Constantes.PRECIO_TBL_PLATOS};
+        String[] campos = new String[]{Constantes.IMAGEN_TBL_PLATOS, Constantes.NOMBRE_TBL_PLATOS, Constantes.PRECIO_TBL_PLATOS};
         Cursor objCursor = objDb.query(Constantes.TBL_PLATOS, campos, null, null, null, null, null);
 
         //Verifico si hay registros
         if (objCursor.moveToFirst()){
             do {
-                arrayDatos.add(new Datos(R.drawable.plato, objCursor.getString(0), objCursor.getInt(1)));
+                //Almaceno el numero de imagen que trae la base de datos
+                //arrayDatos.add(new Datos(objCursor.getInt(0), objCursor.getString(1), objCursor.getInt(2)));
+                arrayDatos.add(new Datos(R.drawable.plato, objCursor.getString(1), objCursor.getInt(2)));
             }while (objCursor.moveToNext());
+            Toast.makeText(getContext(), "Array lleno.", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(getContext(), "No hay registros para llenar arrayDatos.", Toast.LENGTH_SHORT).show();
         }
-
-        /*
-        //Creamos una instancia del adaptador
-        AdapterList objAdapter = new AdapterList(arrayDatos, getContext());
-        //Asignamos el evento OnClickListener que creamos
-        objAdapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "Seleccion: " + arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getNombre(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        //Asignamos el adaptador al recycler
-        objRecycler.setAdapter(objAdapter);*/
     }
 
     // TODO: Rename method, update argument and hook method into UI event
