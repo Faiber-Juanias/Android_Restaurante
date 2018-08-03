@@ -157,7 +157,6 @@ public class FragmentCarta extends Fragment {
                 //arrayDatos.add(new Datos(objCursor.getInt(0), objCursor.getString(1), objCursor.getInt(2)));
                 arrayDatos.add(new Datos(R.drawable.plato, objCursor.getString(1), objCursor.getInt(2)));
             }while (objCursor.moveToNext());
-            Toast.makeText(getContext(), "Array lleno.", Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(getContext(), "No hay registros para llenar arrayDatos.", Toast.LENGTH_SHORT).show();
         }

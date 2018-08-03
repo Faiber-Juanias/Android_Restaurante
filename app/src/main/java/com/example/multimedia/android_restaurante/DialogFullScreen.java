@@ -1,6 +1,7 @@
 package com.example.multimedia.android_restaurante;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -27,7 +28,7 @@ public class DialogFullScreen extends DialogFragment{
     private TextView objPrecio;
     private TextView objDesc;
     private EditText objCantidad;
-    private Button objPedido;
+    private Button btnPedido;
 
     @Nullable
     @Override
@@ -41,17 +42,19 @@ public class DialogFullScreen extends DialogFragment{
         objDesc = (TextView) vista.findViewById(R.id.view_desc);
 
         objCantidad = (EditText) vista.findViewById(R.id.cantidad_pedido);
-        objPedido = (Button) vista.findViewById(R.id.btn_agrega_pedido);
-
+        btnPedido = (Button) vista.findViewById(R.id.btn_agrega_pedido);
+        
         //Verifico si llegan datos del Bundle
         if (getArguments() != null){
             //Almaceno el dato de la imagen
-            String imagen = String.valueOf(getArguments().getInt("imagen"));
+            final String imagen = String.valueOf(getArguments().getInt("imagen"));
 
             //Creamos la conexion
             SQLiteDatabase objDb = conecta();
 
-            //Hacemos la consulta
+            /**
+             * Hacemos una consulta para traer los datos de la tabla Platos, de acuerdo al numero de imagen seleccionado de la lista
+             */
             String[] campos = new String[]{Constantes.NOMBRE_TBL_PLATOS, Constantes.DESC_TBL_PLATOS, Constantes.PRECIO_TBL_PLATOS};
             String[] args = new String[]{imagen};
             Cursor objCursor = objDb.query(Constantes.TBL_PLATOS, campos, "" + Constantes.IMAGEN_TBL_PLATOS + " = ?", args, null, null, null);
@@ -68,6 +71,39 @@ public class DialogFullScreen extends DialogFragment{
                 Toast.makeText(getContext(), "Ningun registro.", Toast.LENGTH_SHORT).show();
             }
         }
+
+        //Definimos el evento para el boton del pedido
+        btnPedido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Rescato el valor del campo de cantidad
+                int cantidad = Integer.parseInt(objCantidad.getText().toString());
+
+                //Creamos la conexion
+                SQLiteDatabase objDb = conecta();
+
+                //Hacemos la consulta
+                String[] campos = new String[]{Constantes.ID_TBL_PLATOS};
+                String[] args = new String[]{String.valueOf(getArguments().getInt("imagen"))};
+                Cursor objCursor = objDb.query(Constantes.TBL_PLATOS, campos, "" + Constantes.IMAGEN_TBL_PLATOS + " = ?", args, null, null, null);
+                int idPlatos = 0;
+                if (objCursor.moveToFirst()){
+                    do {
+                        idPlatos = objCursor.getInt(0);
+                    }while (objCursor.moveToNext());
+                }
+
+                ContentValues objContent = new ContentValues();
+                objContent.put(Constantes.ID_TBL_PLATOS_TBL_PEDIDO, idPlatos);
+                objContent.put(Constantes.CANTIDAD_TBL_PEDIDO, cantidad);
+                
+                long n = objDb.insert(Constantes.TBL_PEDIDO, null, objContent);
+                if (n != 0){
+                    Toast.makeText(getContext(), "Pedido agregado.", Toast.LENGTH_SHORT).show();
+                    objCantidad.setText("");
+                }
+            }
+        });
 
         return vista;
     }
