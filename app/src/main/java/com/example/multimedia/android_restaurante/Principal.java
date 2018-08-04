@@ -1,6 +1,5 @@
 package com.example.multimedia.android_restaurante;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,23 +7,20 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.example.multimedia.android_restaurante.db.OpenHelper;
 import com.example.multimedia.android_restaurante.fragments.FragmentCarta;
-import com.example.multimedia.android_restaurante.fragments.FragmentDetalleCarta;
 import com.example.multimedia.android_restaurante.fragments.FragmentPedido;
 
-public class Principal extends AppCompatActivity implements FragmentCarta.OnFragmentInteractionListener, FragmentDetalleCarta.OnFragmentInteractionListener, FragmentPedido.OnFragmentInteractionListener{
+public class Principal extends AppCompatActivity implements FragmentCarta.OnFragmentInteractionListener, FragmentPedido.OnFragmentInteractionListener{
 
     //Almacenamos en un array los id de cada boton
-    private int[] idBotones = new int[]{R.id.btn_carta, R.id.btn_pedido, R.id.btn_informe};
-    private ImageButton[] objBotones = new ImageButton[3];
+    private int[] idBotones = new int[]{R.id.btn_carta, R.id.btn_pedido};
+    private ImageButton[] objBotones = new ImageButton[2];
     private ImageButton btnSalida;
 
     //Almaceno la instancia de todos los fragmentos
-    Fragment[] objFragment = new Fragment[3];
+    Fragment[] objFragment = new Fragment[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +39,7 @@ public class Principal extends AppCompatActivity implements FragmentCarta.OnFrag
 
         //Lleno el array con cada una de las instancias de cada fragmento
         objFragment[0] = new FragmentCarta();
-        objFragment[1] = new FragmentDetalleCarta();
-        objFragment[2] = new FragmentPedido();
+        objFragment[1] = new FragmentPedido();
 
         for (int i=0; i<idBotones.length; i++){
             //Creamos la referencia a los botones
@@ -62,17 +57,10 @@ public class Principal extends AppCompatActivity implements FragmentCarta.OnFrag
                         case R.id.btn_carta:
                             objBotones[n].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             objBotones[1].setBackgroundColor(0);
-                            objBotones[2].setBackgroundColor(0);
                             break;
                         case R.id.btn_pedido:
                             objBotones[n].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             objBotones[0].setBackgroundColor(0);
-                            objBotones[2].setBackgroundColor(0);
-                            break;
-                        case R.id.btn_informe:
-                            objBotones[n].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                            objBotones[0].setBackgroundColor(0);
-                            objBotones[1].setBackgroundColor(0);
                             break;
                     }
                     FragmentManager objManager = getSupportFragmentManager();

@@ -103,9 +103,6 @@ public class FragmentCarta extends Fragment {
         objAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Imagen: " + arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getImagen(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(), "Nombre: " + arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getNombre(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(), "Precio: " + arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getPrecio(), Toast.LENGTH_SHORT).show();
                 FragmentManager objManager = getFragmentManager();
                 DialogFullScreen objDialog = new DialogFullScreen();
 

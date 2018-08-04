@@ -1,14 +1,23 @@
 package com.example.multimedia.android_restaurante.fragments;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.multimedia.android_restaurante.Datos;
 import com.example.multimedia.android_restaurante.R;
+import com.example.multimedia.android_restaurante.db.Constantes;
+import com.example.multimedia.android_restaurante.db.OpenHelper;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,7 +74,46 @@ public class FragmentPedido extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_pedido, container, false);
+        View vista = inflater.inflate(R.layout.fragment_fragment_pedido, container, false);
+
+        //Creo la referencia con el recycler
+        RecyclerView objRecycler = (RecyclerView) vista.findViewById(R.id.recycler_pedidos);
+        objRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+        //Creamos el array de tipo Datos
+        ArrayList<Datos> arrayDatos = new ArrayList<>();
+
+        //Conectamos con la base de datos
+        SQLiteDatabase objDb = conecta();
+        //Hacemos una consulta para traer el id de la tabla Platos
+        String[] campos = new String[]{Constantes.ID_TBL_PLATOS_TBL_PEDIDO};
+        Cursor objCursor = objDb.query(Constantes.TBL_PEDIDO, campos, null, null, null, null, null);
+        //validamos si hay registros
+        if (objCursor.moveToFirst()){
+            do {
+                //Rescato el id de platos que se encuentra en la tabla pedidos
+                int idPlatos = objCursor.getInt(0);
+                //Hacemos una consulta para traer la imagen de acuerdo a ese id
+                String[] camposDos =  new String[]{Constantes.IMAGEN_TBL_PLATOS};
+                String[] args = new String[]{String.valueOf(idPlatos)};
+                Cursor objCursorDos = objDb.query(Constantes.TBL_PLATOS, camposDos, "" + camposDos[0] + " = ?", args, null, null, null);
+                //Valido si hay registros
+                if (objCursorDos.moveToFirst()){
+                    do {
+
+                    }while (objCursor.moveToNext());
+                }
+            }while (objCursor.moveToNext());
+        }
+
+        return vista;
+    }
+
+    //Metodo que conecta con la base de datos
+    public SQLiteDatabase conecta(){
+        OpenHelper objConecta = new OpenHelper(getContext(), "restaurante", null, 1);
+        SQLiteDatabase objDb = objConecta.getWritableDatabase();
+        return objDb;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
