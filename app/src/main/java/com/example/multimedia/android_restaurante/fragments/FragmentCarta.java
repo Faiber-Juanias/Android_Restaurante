@@ -13,14 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.multimedia.android_restaurante.AdapterList;
-import com.example.multimedia.android_restaurante.Datos;
+import com.example.multimedia.android_restaurante.AdapterListPlato;
+import com.example.multimedia.android_restaurante.DatosPlato;
 import com.example.multimedia.android_restaurante.DialogFullScreen;
 import com.example.multimedia.android_restaurante.R;
 import com.example.multimedia.android_restaurante.db.Constantes;
@@ -90,14 +87,14 @@ public class FragmentCarta extends Fragment {
         Button objSync = (Button) view.findViewById(R.id.btn_sync);
 
         //Instanciamos el ArrayList
-        final ArrayList<Datos> arrayDatos = new ArrayList<>();
+        final ArrayList<DatosPlato> arrayDatosPlato = new ArrayList<>();
         //Mostramos el recycler como una lista vertical
         objRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         //Llamamos al metodo para que llene el ArrayList
-        llenaRecycler(arrayDatos);
+        llenaRecycler(arrayDatosPlato);
 
         //Creamos una instancia del adaptador
-        AdapterList objAdapter = new AdapterList(arrayDatos, getContext());
+        AdapterListPlato objAdapter = new AdapterListPlato(arrayDatosPlato, getContext());
 
         //Asignamos el evento OnClickListener que creamos
         objAdapter.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +105,7 @@ public class FragmentCarta extends Fragment {
 
                 //Creo un Bundle para enviar los datos a DialogFullScreen
                 Bundle objBundle = new Bundle();
-                objBundle.putInt("imagen", arrayDatos.get(objRecycler.getChildAdapterPosition(view)).getImagen());
+                objBundle.putInt("imagen", arrayDatosPlato.get(objRecycler.getChildAdapterPosition(view)).getImagen());
                 objDialog.setArguments(objBundle);
 
                 FragmentTransaction objTransaction = objManager.beginTransaction();
@@ -140,7 +137,7 @@ public class FragmentCarta extends Fragment {
         return objDb;
     }
 
-    public void llenaRecycler(ArrayList<Datos> arrayDatos){
+    public void llenaRecycler(ArrayList<DatosPlato> arrayDatosPlato){
         SQLiteDatabase objDb = conecta();
 
         //Consulto todos los registros de la tabla Platos
@@ -151,11 +148,11 @@ public class FragmentCarta extends Fragment {
         if (objCursor.moveToFirst()){
             do {
                 //Almaceno el numero de imagen que trae la base de datos
-                //arrayDatos.add(new Datos(objCursor.getInt(0), objCursor.getString(1), objCursor.getInt(2)));
-                arrayDatos.add(new Datos(R.drawable.plato, objCursor.getString(1), objCursor.getInt(2)));
+                //arrayDatosPlato.add(new DatosPlato(objCursor.getInt(0), objCursor.getString(1), objCursor.getInt(2)));
+                arrayDatosPlato.add(new DatosPlato(objCursor.getInt(0), objCursor.getString(1), objCursor.getInt(2)));
             }while (objCursor.moveToNext());
         }else {
-            Toast.makeText(getContext(), "No hay registros para llenar arrayDatos.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "No hay registros para llenar arrayDatosPlato.", Toast.LENGTH_SHORT).show();
         }
     }
 

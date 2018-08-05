@@ -1,26 +1,21 @@
 package com.example.multimedia.android_restaurante;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
-public class AdapterList extends RecyclerView.Adapter<AdapterList.HolderDatos>
+public class AdapterListPlato extends RecyclerView.Adapter<AdapterListPlato.HolderDatos>
     implements View.OnClickListener{
 
     //Creamos el Array
-    private ArrayList<Datos> arrayDatos;
+    private ArrayList<DatosPlato> arrayDatos;
     private Context objContext;
 
     private static final String TAG = "MyActivity";
@@ -28,17 +23,17 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.HolderDatos>
     //Para generar eventos creamos el escuchador
     private View.OnClickListener listener;
 
-    public AdapterList(ArrayList<Datos> arrayDatos, Context objContext) {
+    public AdapterListPlato(ArrayList<DatosPlato> arrayDatos, Context objContext) {
         this.arrayDatos = arrayDatos;
         this.objContext = objContext;
     }
 
     @NonNull
     @Override
-    public AdapterList.HolderDatos onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public AdapterListPlato.HolderDatos onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-        //Inflo a item_list_platos.xml
-        View view = LayoutInflater.from(objContext).inflate(R.layout.item_list_platos, null, false);
+        //Inflo a item_list_platoxml
+        View view = LayoutInflater.from(objContext).inflate(R.layout.item_list_plato, null, false);
 
         view.setOnClickListener(this);
         //Retornamos una instancia de HolderDatos
@@ -46,7 +41,7 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.HolderDatos>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterList.HolderDatos holderDatos, int i) {
+    public void onBindViewHolder(@NonNull AdapterListPlato.HolderDatos holderDatos, int i) {
         //try {
             //Asigno la informacion a los componentes
             holderDatos.objImagen.setImageResource(arrayDatos.get(i).getImagen());
@@ -76,7 +71,7 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.HolderDatos>
 
     public class HolderDatos extends RecyclerView.ViewHolder {
 
-        //Creamos las referencias de item_list_platos
+        //Creamos las referencias de item_list_plato
         ImageView objImagen;
         TextView objNombrePlato;
         TextView objPrecioPlato;

@@ -10,7 +10,7 @@ public class Constantes {
     public static final String IMAGEN_TBL_PLATOS = "Imagen";
     public static final String CREA_TBL_PLATOS = "CREATE TABLE " + TBL_PLATOS + " (" +
             ID_TBL_PLATOS + " INTEGER PRIMARY KEY, " +
-            NOMBRE_TBL_PLATOS + " TEXT, " +
+            NOMBRE_TBL_PLATOS + " TEXT UNIQUE, " +
             DESC_TBL_PLATOS + " TEXT, " +
             PRECIO_TBL_PLATOS + " INTEGER, " +
             IMAGEN_TBL_PLATOS + " INTEGER)";
@@ -23,5 +23,6 @@ public class Constantes {
     public static final String CREA_TBL_PEDIDO = "CREATE TABLE " + TBL_PEDIDO + " (" +
             ID_TBL_PEDIDO + " INTEGER PRIMARY KEY, " +
             ID_TBL_PLATOS_TBL_PEDIDO + " INTEGER, " +
-            CANTIDAD_TBL_PEDIDO + " INTEGER)";
+            CANTIDAD_TBL_PEDIDO + " INTEGER, FOREIGN KEY(" + ID_TBL_PLATOS_TBL_PEDIDO + ") REFERENCES " +
+            TBL_PLATOS + "(" + ID_TBL_PLATOS + "))";
 }

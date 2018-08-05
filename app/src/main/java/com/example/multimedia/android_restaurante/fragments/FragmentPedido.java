@@ -1,6 +1,8 @@
 package com.example.multimedia.android_restaurante.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -11,8 +13,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
-import com.example.multimedia.android_restaurante.Datos;
+import com.example.multimedia.android_restaurante.AdapterListPedido;
+import com.example.multimedia.android_restaurante.DatosPedido;
+import com.example.multimedia.android_restaurante.DatosPlato;
 import com.example.multimedia.android_restaurante.R;
 import com.example.multimedia.android_restaurante.db.Constantes;
 import com.example.multimedia.android_restaurante.db.OpenHelper;
@@ -76,37 +82,82 @@ public class FragmentPedido extends Fragment {
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_fragment_pedido, container, false);
 
+        Button btnSyncPedido = (Button) vista.findViewById(R.id.btn_sync_pedido);
         //Creo la referencia con el recycler
-        RecyclerView objRecycler = (RecyclerView) vista.findViewById(R.id.recycler_pedidos);
+        final RecyclerView objRecycler = (RecyclerView) vista.findViewById(R.id.recycler_pedidos);
         objRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        //Creamos el array de tipo Datos
-        ArrayList<Datos> arrayDatos = new ArrayList<>();
+        muestraPedido(objRecycler);
+
+        btnSyncPedido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Sincronizando...", Toast.LENGTH_SHORT).show();
+                muestraPedido(objRecycler);
+            }
+        });
+
+        return vista;
+    }
+
+    private void muestraPedido(RecyclerView objRecycler) {
+        final RecyclerView recycler = objRecycler;
+        //Creamos el array de tipo DatosPlato
+        final ArrayList<DatosPedido> arrayDatosPedido = new ArrayList<>();
+
+        //LLENAMOS EL RECYCLER
 
         //Conectamos con la base de datos
-        SQLiteDatabase objDb = conecta();
+        final SQLiteDatabase objDb = conecta();
         //Hacemos una consulta para traer el id de la tabla Platos
-        String[] campos = new String[]{Constantes.ID_TBL_PLATOS_TBL_PEDIDO};
-        Cursor objCursor = objDb.query(Constantes.TBL_PEDIDO, campos, null, null, null, null, null);
-        //validamos si hay registros
+        Cursor objCursor = objDb.rawQuery("SELECT " + Constantes.TBL_PEDIDO + "." + Constantes.ID_TBL_PEDIDO +
+                ", " + Constantes.NOMBRE_TBL_PLATOS +
+                ", " + Constantes.CANTIDAD_TBL_PEDIDO +
+                ", " + Constantes.PRECIO_TBL_PLATOS +
+                " FROM " + Constantes.TBL_PLATOS + " INNER JOIN " + Constantes.TBL_PEDIDO +
+                " ON " + Constantes.TBL_PLATOS + "." + Constantes.ID_TBL_PLATOS + " = " +
+                Constantes.TBL_PEDIDO + "." + Constantes.ID_TBL_PLATOS_TBL_PEDIDO, null);
+        //Valido si devuelve registros
         if (objCursor.moveToFirst()){
             do {
-                //Rescato el id de platos que se encuentra en la tabla pedidos
-                int idPlatos = objCursor.getInt(0);
-                //Hacemos una consulta para traer la imagen de acuerdo a ese id
-                String[] camposDos =  new String[]{Constantes.IMAGEN_TBL_PLATOS};
-                String[] args = new String[]{String.valueOf(idPlatos)};
-                Cursor objCursorDos = objDb.query(Constantes.TBL_PLATOS, camposDos, "" + camposDos[0] + " = ?", args, null, null, null);
-                //Valido si hay registros
-                if (objCursorDos.moveToFirst()){
-                    do {
-
-                    }while (objCursor.moveToNext());
-                }
+                arrayDatosPedido.add(new DatosPedido(objCursor.getInt(0), objCursor.getString(1), objCursor.getInt(2), objCursor.getInt(3)));
             }while (objCursor.moveToNext());
         }
 
-        return vista;
+        AdapterListPedido objAdapter = new AdapterListPedido(getContext(), arrayDatosPedido);
+        objAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                AlertDialog.Builder objBuilder = new AlertDialog.Builder(getActivity())
+                        .setTitle("Advertencia")
+                        .setMessage("Se eliminará este pedido!")
+                        .setCancelable(false)
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Obtengo el id del pedido
+                                int idPedido = arrayDatosPedido.get(recycler.getChildAdapterPosition(view)).getIdPedido();
+                                //Eliminamos el pedido
+                                String[] args = new String[]{String.valueOf(idPedido)};
+                                long n = objDb.delete(Constantes.TBL_PEDIDO, "" + Constantes.ID_TBL_PEDIDO + " = ?", args);
+                                if (n != 0){
+                                    Toast.makeText(getContext(), "Pedido eliminado.", Toast.LENGTH_SHORT).show();
+                                    muestraPedido(recycler);
+                                }
+                            }
+                        });
+                AlertDialog objAlert = objBuilder.create();
+                objAlert.show();
+            }
+        });
+
+        objRecycler.setAdapter(objAdapter);
     }
 
     //Metodo que conecta con la base de datos

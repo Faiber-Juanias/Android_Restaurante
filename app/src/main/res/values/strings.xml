@@ -5,9 +5,14 @@
     <string name="image_splash">Restaurante</string>
     <string name="view_splash">Registro de Pedidos en un restaurante</string>
 
-    <!--Layout item_list_platos-->
+    <!--Layout item_list_plato-->
     <string name="view_nombre_plato">Nombre del plato</string>
     <string name="view_precio_plato">Precio del plato</string>
+
+    <!--Layout item_list_pedido-->
+    <string name="view_nombre_pedido">Nombre pedido</string>
+    <string name="view_cantidad_pedido">Cantidad pedido</string>
+    <string name="view_precio_pedido">Precio pedido</string>
 
     <!--FragmentCarta-->
     <string name="btn_sync">Sincronizar</string>
