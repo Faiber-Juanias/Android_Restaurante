@@ -79,31 +79,41 @@ public class DialogFullScreen extends DialogFragment{
                 //Valido que el campo no este vacio
                 String campo = objCantidad.getText().toString();
                 if(!campo.isEmpty()) {
-                    //Rescato el valor del campo de cantidad
-                    int cantidad = Integer.parseInt(objCantidad.getText().toString());
+                    //Valido que el valor sea mayor o igual a 0
+                    if (Integer.parseInt(campo) >= 0) {
+                        //Compruebo que el valor sea un entero
+                        if (compruebaEntero(campo)) {
+                            //Rescato el valor del campo de cantidad
+                            int cantidad = Integer.parseInt(objCantidad.getText().toString());
 
-                    //Creamos la conexion
-                    SQLiteDatabase objDb = conecta();
+                            //Creamos la conexion
+                            SQLiteDatabase objDb = conecta();
 
-                    //Hacemos la consulta
-                    String[] campos = new String[]{Constantes.ID_TBL_PLATOS};
-                    String[] args = new String[]{String.valueOf(getArguments().getInt("imagen"))};
-                    Cursor objCursor = objDb.query(Constantes.TBL_PLATOS, campos, "" + Constantes.IMAGEN_TBL_PLATOS + " = ?", args, null, null, null);
-                    int idPlatos = 0;
-                    if (objCursor.moveToFirst()) {
-                        do {
-                            idPlatos = objCursor.getInt(0);
-                        } while (objCursor.moveToNext());
-                    }
+                            //Hacemos la consulta
+                            String[] campos = new String[]{Constantes.ID_TBL_PLATOS};
+                            String[] args = new String[]{String.valueOf(getArguments().getInt("imagen"))};
+                            Cursor objCursor = objDb.query(Constantes.TBL_PLATOS, campos, "" + Constantes.IMAGEN_TBL_PLATOS + " = ?", args, null, null, null);
+                            int idPlatos = 0;
+                            if (objCursor.moveToFirst()) {
+                                do {
+                                    idPlatos = objCursor.getInt(0);
+                                } while (objCursor.moveToNext());
+                            }
 
-                    ContentValues objContent = new ContentValues();
-                    objContent.put(Constantes.ID_TBL_PLATOS_TBL_PEDIDO, idPlatos);
-                    objContent.put(Constantes.CANTIDAD_TBL_PEDIDO, cantidad);
+                            ContentValues objContent = new ContentValues();
+                            objContent.put(Constantes.ID_TBL_PLATOS_TBL_PEDIDO, idPlatos);
+                            objContent.put(Constantes.CANTIDAD_TBL_PEDIDO, cantidad);
 
-                    long n = objDb.insert(Constantes.TBL_PEDIDO, null, objContent);
-                    if (n != 0) {
-                        Toast.makeText(getContext(), "Pedido agregado.", Toast.LENGTH_SHORT).show();
-                        objCantidad.setText("");
+                            long n = objDb.insert(Constantes.TBL_PEDIDO, null, objContent);
+                            if (n != 0) {
+                                Toast.makeText(getContext(), "Pedido agregado.", Toast.LENGTH_SHORT).show();
+                                objCantidad.setText("");
+                            }
+                        }else{
+                            Toast.makeText(getContext(), "Solo se aceptan numeros enteros.", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(getContext(), "Solo se aceptan numeros positivos.", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Toast.makeText(getContext(), "Debe introducir una cantidad.", Toast.LENGTH_SHORT).show();
@@ -112,6 +122,17 @@ public class DialogFullScreen extends DialogFragment{
         });
 
         return vista;
+    }
+
+    //Compruba que una cadena sea un entero
+    public boolean compruebaEntero(String campo){
+        int contador = 0;
+        for (int i=0; i<campo.length(); i++){
+            if (Character.isDigit(campo.charAt(i))){
+                contador++;
+            }
+        }
+        return contador == campo.length();
     }
 
     @NonNull
